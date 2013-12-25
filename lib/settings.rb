@@ -113,9 +113,6 @@ module Settings
 
     set_store :settings
 
-    if defined?(Rails)
-      @@config_file  = Rails.root.join "/config/settings.yml"
-    end
 
     def config_file(file)
       @@config_file = file 
