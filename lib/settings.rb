@@ -135,11 +135,11 @@ module Settings
     end
 
     def load
-      @all_settings = nil
-      @settings = all_settings[env]
+      @settings = settings.merge(load_settings[env])
     end
 
     def save
+      all_settings = load_settings
       all_settings[env] = @settings
       File.open( @@config_file, 'w+' ) {|f| f.write all_settings.to_yaml } 
     end   
@@ -150,10 +150,8 @@ module Settings
       ENV["RAILS_ENV"] || "development"
     end
 
-    def all_settings
-      @all_settings ||= YAML::load_file( @@config_file ) 
-    rescue Errno::ENOENT
-      @all_settings = {}
+    def load_settings
+      YAML::load_file( @@config_file ) 
     end
   end
 end
@@ -161,3 +159,5 @@ end
 if defined?(Rails)
   require "settings/railtie"
 end
+
+require File.expand_path("../settings/monitor", __FILE__)
