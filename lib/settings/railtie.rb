@@ -4,6 +4,7 @@ module Settings
       if defined?(Rails) && Rails.root
         Settings.config_file Rails.root.join("config/settings.yml")
         Settings.load
+        Settings::Monitor.listener.start
       end
     end
   end
