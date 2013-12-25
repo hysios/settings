@@ -34,8 +34,10 @@ module Settings
           value = args.first
           if value.nil?
             read_property(method)
-          else
+          elsif target[method].nil?
             write_property(method, value)
+          else
+            read_property(method)
           end
         end
       end
@@ -155,3 +157,5 @@ module Settings
     end
   end
 end
+
+require "settings/railtie"
