@@ -158,4 +158,6 @@ module Settings
   end
 end
 
-require "settings/railtie"
+if defined?(Rails)
+  require "settings/railtie"
+end

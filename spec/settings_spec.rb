@@ -39,6 +39,18 @@ describe Settings do
       Settings.that.a.name.should == 'hysios'
       Settings.that.a.age.should == 18
     end    
+
+    it "default value" do 
+      Settings.this.a.default_value 1234
+      Settings.this.a.default_value.should == 1234
+    end
+
+    it "always value invalide default value" do 
+      Settings.this.always.default_value = 5678
+      Settings.this.always.default_value 1111
+      Settings.this.always.default_value.should == 5678
+    end
+
   end
 
   describe "load and save" do 
