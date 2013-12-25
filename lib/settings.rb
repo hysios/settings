@@ -117,7 +117,7 @@ module Settings
 
 
     def config_file(file)
-      @@config_file = file 
+      @@config_file = file.to_s 
     end
 
     def settings
