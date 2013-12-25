@@ -3,3 +3,4 @@ test:
   loading:
     from:
       file: 1234
+      test: 3
