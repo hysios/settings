@@ -3,9 +3,10 @@ ENV["RAILS_ENV"] ||= "test"
 require "settings"
 require "fileutils"
 
-Settings.config_file File.expand_path("../config/settings.yml", __FILE__)
-
 describe Settings do 
+  before :each do 
+    Settings.config_file File.expand_path("../config/settings.yml", __FILE__)
+  end
 
   describe "node access" do 
     it "set a value" do 
@@ -98,5 +99,47 @@ describe Settings do
       from.should include("file" => 1234, "disk" => "A")
 
     end    
+  end
+
+
+  describe "monitor" do 
+    let (:matches) { [] }
+
+    def line_match(conditions, &block)
+      cond = conditions[matches.size]
+      ret = cond.call
+      if ret
+        matches.push ret
+      else
+        matches.clear
+      end
+
+      if matches.size == conditions.size
+        block.call
+      end
+    end
+
+    before :each do 
+      FileUtils.mkdir_p File.expand_path("../../tmp", __FILE__)
+      Settings.config_file File.expand_path("../config/data.yml", __FILE__)
+      Settings.monitor.test = 1
+      Settings.save
+    end
+
+    it "change file auto sync settings" do 
+      File.open(File.expand_path("../config/data.yml", __FILE__)) do |f|
+        line_match [
+          ->() { f.readline.strip == 'monitor' },
+          ->() { f.readline.strip == 'test: 1' }
+        ] do  
+          f.seek -1, IO::SEEK_CUR
+          f.write 2
+          f.close
+          sleep 0.5
+          Settings.monitor.test.should == 2
+        end
+      end
+    end
+
   end
 end

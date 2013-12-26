@@ -1,6 +1,23 @@
 ---
 test:
+  test: 1
+  hi: World
+  this:
+    a:
+      data: '1'
+      default_value: 1234
+    always:
+      default_value: 5678
+  that:
+    a:
+      data: hi
+      name: hysios
+      age: 18
+  ready: asdfasdf
   loading:
     from:
       file: 1234
       test: 3
+      disk: A
+  monitor:
+    test: 1
